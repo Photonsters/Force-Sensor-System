@@ -6,12 +6,13 @@
 // If DEBUG is anything but zero, the program will block until a serial monitor is attached/open
 // Set to 1 to get force sensor values on the serial monitor
 // Set to 2 to get more detailed program status
-#define DEBUG 1
+#define DEBUG 2
 
 // Configurable parameters
-#define DATA_INTERVAL 250       // How often (ms) to sample data
+#define DATA_INTERVAL 100       // How often (ms) to sample data
 #define REFERENCE_MASS 1000     // Reference mass for calibration routine, in g
 #define INVERT_FORCES 1         // set to something other than zero if you need inverted forces
+#define FORCE_SENTINEL 6000     // Maximum allowed difference between sequential valid force readings
 
 // Force calibration settings
 // #define OVERRIDE_CALIBRATION 10 // Uncommenting this line sets the calibration value
