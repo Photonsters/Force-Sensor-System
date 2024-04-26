@@ -1,5 +1,5 @@
 #include "setup.h"
-#include <HX711.h>
+#include <HX711_ADC.h>
 #include <OneWireNg_CurrentPlatform.h>
 #include <DallasTemperature.h>
 
@@ -11,7 +11,7 @@ float temperature;
 // Declaration of externals used in this file
 //extern int getCalibration();
 
-HX711 hx711;                           // HX711 constructor
+HX711_ADC hx711(HX711_DOUT, HX711_SCK);                           // HX711 constructor
 OneWire oneWireObject(ONE_WIRE_BUS);   // OneWire constructor
 DallasTemperature ds18b20(&oneWireObject);  // DallasTemperature constructor
 int getCalibration();
@@ -26,11 +26,12 @@ void setup() {
   fMean = allTimeSum = allTimeSamples = 0;
 
   // Initialize the force sensor
-  hx711.begin( HX711_DOUT, HX711_SCK);
+  hx711.begin();
+  hx711.setSamplesInUse(SMOOTHING);
   if( DEBUG == 2){
-    Serial.print("Taring....");
+    Serial.print("Initializing Load Cell and Taring....");
   }
-  hx711.tare(20); // Tare with 20 readings (default is 10)
+  hx711.start(2000, true); // Settle for 2s, then tare
    if( DEBUG == 2){
     Serial.println("Done.");
   }
@@ -45,7 +46,7 @@ void setup() {
   hx711Cal = getCalibration();
 #endif
 
-  hx711.set_scale(hx711Cal);
+  hx711.setCalFactor(hx711Cal);
 
   if ( DEBUG == 2)
   {
@@ -79,17 +80,17 @@ void loop() {
     if( serdata == '1')
     {
       serdata = (char) 0;
-      hx711.tare(20);
+      hx711.tareNoDelay();
     }
   }
 
   // Get smoothed value from the dataset:
-  if ( hx711.is_ready())
+  if ( hx711.update())
   {
     // All of the time-based logic will blow up when millis() overflows (~49 days).
     if (millis() > ((lastT * 1000) + DATA_INTERVAL))
     {
-      force = hx711.get_units();                   // Read the load cell value as a float (4 bytes on 8-bit AVRs)
+      force = hx711.getData();                   // Read the load cell value as a float (4 bytes on 8-bit AVRs)
       if( INVERT_FORCES)
       {
         force = -force;
@@ -98,7 +99,7 @@ void loop() {
       t = (float(millis()) / 1000 - t_offset); // Elapsed time in seconds.  (Why must I cast millis() here?)
 
       // Check for an outlier (presumed glitch/noise)
-      if (fabs(force - last_force) > FORCE_SENTINEL)
+      /*if (fabs(force - last_force) > FORCE_SENTINEL)
       {
         if ( DEBUG == 2)
         {
@@ -109,6 +110,7 @@ void loop() {
       }
       
       last_force = force; // Remember the current value so we can compare to the next one
+      */
       allTimeSamples += 1;
       allTimeSum += force;
       fMean = allTimeSum / allTimeSamples;
