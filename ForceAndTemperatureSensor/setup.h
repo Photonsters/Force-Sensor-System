@@ -1,5 +1,6 @@
 #define HX711_DOUT 19
 #define HX711_SCK 18
+#define HX711_RATE 23
 #define ONE_WIRE_BUS 26 // Where the DS18B20 DQ pin is wired
 #define T_IN_C          // Set this to T_IN_C or T_IN_F, to report temperatures in C or F
 
@@ -9,7 +10,7 @@
 #define DEBUG 0
 
 // Configurable parameters
-#define DATA_INTERVAL 100       // How often (ms) to sample data (Hardware minimum 100)
+#define DATA_INTERVAL 20       // How often (ms) to sample data (Hardware minimum 12.5)
 #define REFERENCE_MASS 1000     // Reference mass for calibration routine, in g
 #define INVERT_FORCES 1         // set to something other than zero if you need inverted forces
 #define SMOOTHING 8             // Number of HX711 readings to smooth over

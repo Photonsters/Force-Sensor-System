@@ -26,6 +26,7 @@ void setup() {
   fMean = allTimeSum = allTimeSamples = 0;
 
   // Initialize the force sensor
+  digitalWrite(HX711_RATE, HIGH);
   hx711.begin();
   hx711.setSamplesInUse(SMOOTHING);
   if( DEBUG == 2){
