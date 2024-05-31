@@ -10,13 +10,13 @@
 #define DEBUG 0
 
 // Configurable parameters
-#define DATA_INTERVAL 100        // How often (ms) to sample data (Hardware minimum 12.5)
+#define DATA_INTERVAL 20        // How often (ms) to sample data (Hardware minimum 12.5)
 #define REFERENCE_MASS 1000     // Reference mass for calibration routine, in g
 #define INVERT_FORCES 1         // set to something other than zero if you need inverted forces
 #define SMOOTHING 8             // Number of HX711 readings to smooth over
 
 // Force calibration settings
 // #define OVERRIDE_CALIBRATION 10 // Uncommenting this line sets the calibration value
-#define DEFAULT_CALIBRATION 100 // If no calibration is stored in flash, use this
+#define DEFAULT_CALIBRATION 12 // If no calibration is stored in flash, use this
 // Use the last sector of the flash for calibration constant
 #define FLASH_TARGET_OFFSET (PICO_FLASH_SIZE_BYTES - FLASH_SECTOR_SIZE)

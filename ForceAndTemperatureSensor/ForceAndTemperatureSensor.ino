@@ -154,14 +154,15 @@ void loop() {
     }
     */
 
-  //Temporary code until I get a version with working temp sensor:
-  if( DEBUG == 2){
+      //Temporary code until I get a version with working temp sensor:
+      if( DEBUG == 2){
         Serial.print("Current time, force: ");
       }
-      Serial.print(t);
-      Serial.print(", ");
+    
+      //Serial.print(t);
+      //Serial.print(", ");
       Serial.println(force);
-      }
+    }
       // Go to sleep for DATA_INTERVAL
     sleep_ms( DATA_INTERVAL);
   }
